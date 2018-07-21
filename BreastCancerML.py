@@ -29,8 +29,21 @@ data = pd.read_csv(input_data, index_col=False)
 print(data.head(5))
 
 # assign data to the correct axes
-Y = data['diagnosis'].values
-X = data.drop('diagnosis', axis=1).values
+Y = data['diagnosis'].values # Get everything down the diagnosis column
+X = data.drop('diagnosis', axis=1).values # get everything *but* the diagnosis column
+
+
+test_set = np.array([0.1425, 0.2839, 0.2414, 0.1052, 0.2597, 0.09744, 0.4956, 0.00911, 0.07458, 0.05661, 0.01867, 0.05963, 0.009208, 0.2098, 0.8663, 0.6869, 0.2575, 0.6638, 0.173, 1.156, 3.445, 11.42, 14.91, 20.38, 26.5, 27.23, 77.58, 98.87, 386.1, 567.7, 84348301])
+
+
+
+
+print("--------------------------------------------------------------------------------")
+print(X)
+print("--------------------------------------------------------------------------------")
+print("--------------------------------------------------------------------------------")
+# print(Y)
+print("--------------------------------------------------------------------------------")
 
 # --------------------------------------------------------------------------------
 ## The below "is not needed"
@@ -54,13 +67,18 @@ print( "SVC accuracy: %f, run time: %f)" % (cv_results.mean(), end-start))
 ## The below is the "training"
 # THIS IS WHAT IS NEEDED FOR PRODUCTION TO ESTIMATE THE MODEL
 scaler = StandardScaler().fit(X)
-X_scaled = scaler.transform(X)
-model = SVC(C=2.0, kernel='rbf')
-model.fit(X_scaled, Y)
+X_scaled = scaler.transform(X) ## normalize the X values (2d matrix)
+model = SVC(C=2.0, kernel='rbf') ## choose the model
+model.fit(X_scaled, Y) ## train the model.  (input values, answers)
 
 
 # THIS IS WHAT IS NEEDED FOR PREDICTION
-X_test_scaled = scaler.transform(X[10,:].reshape(1,-1))
-predictions = model.predict(X_test_scaled)
+X_test_scaled = scaler.transform(X[10,:].reshape(1,-1)) ## One line of values, normalized.  These are the test values
+predictions = model.predict(X_test_scaled) ## Output - what should these values give you?
 
 print("Predicted: {}, actual: {}".format(predictions[0], Y[10]));
+
+X_test_scaled = scaler.transform(test_set.reshape(1,-1)) ## One line of values, normalized.  These are the test values
+predictions = model.predict(X_test_scaled) ## Output - what should these values give you?
+
+print("Predicted: {}, actual: {}".format(predictions[0], 'M'));
