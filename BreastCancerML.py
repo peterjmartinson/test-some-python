@@ -12,7 +12,8 @@ from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 import time
 
-class ModelPumperOuter(object):
+class BreastCancerPredictionMachine(object):
+
   def getData(self, input_data):
     if input_data == None:
       print("Please enter data")
@@ -20,6 +21,9 @@ class ModelPumperOuter(object):
     elif input_data[-4:] != ".csv":
       return 0
     else:
+      return 1
+
+  def setInput(self, input_data):
       return 1
   
 
@@ -38,12 +42,6 @@ test_set = np.array([0.1425, 0.2839, 0.2414, 0.1052, 0.2597, 0.09744, 0.4956, 0.
 
 
 
-print("--------------------------------------------------------------------------------")
-print(X)
-print("--------------------------------------------------------------------------------")
-print("--------------------------------------------------------------------------------")
-# print(Y)
-print("--------------------------------------------------------------------------------")
 
 # --------------------------------------------------------------------------------
 ## The below "is not needed"
