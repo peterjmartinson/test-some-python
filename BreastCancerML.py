@@ -19,7 +19,7 @@ class BreastCancerPredictionMachine(object):
             raise TypeError('input must be a list')
         if len(input_list) != 31:
             raise ValueError('input must be a list with 31 elements')
-        numpy_array = np.array(input_list)
+        numpy_array = np.array(input_list).astype(np.float64)
         return numpy_array
 
     def getDiagnosis(self, data):
