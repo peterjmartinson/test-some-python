@@ -1,5 +1,6 @@
 import unittest
 from BreastCancerML import *
+from sklearn.preprocessing import StandardScaler
 
 class TestBreastCancerPredictionMachine(unittest.TestCase):
 
@@ -9,13 +10,19 @@ class TestBreastCancerPredictionMachine(unittest.TestCase):
         result = machine.setInput(test_data)
         self.assertIsNotNone(result)
 
-    def test_setInuput_Does_Not_Take_Less_Than_31_Elements(self):
+    def test_setInput_Must_Take_A_List(self):
+        machine = BreastCancerPredictionMachine()
+        test_data = 'Not an array'
+        with self.assertRaises(TypeError):
+          machine.setInput(test_data)
+
+    def test_setInput_Does_Not_Take_Less_Than_31_Elements(self):
         machine = BreastCancerPredictionMachine()
         test_data = [1, 2, 3]
         with self.assertRaises(ValueError):
           machine.setInput(test_data)
 
-    def test_setInuput_Does_Not_Take_More_Than_31_Elements(self):
+    def test_setInput_Does_Not_Take_More_Than_31_Elements(self):
         machine = BreastCancerPredictionMachine()
         test_data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
         with self.assertRaises(ValueError):
@@ -33,9 +40,9 @@ class TestBreastCancerPredictionMachine(unittest.TestCase):
         result = machine.getDiagnosis(test_data)
         self.assertEqual(len(result), 1)
 
-    def test_getDiagnosis_Raises_TypeError_Exception_If_Input_Is_Not_List(self):
+    def test_getDiagnosis_Raises_TypeError_Exception_If_Input_Is_Not_List_Or_Numpy_Array(self):
         machine = BreastCancerPredictionMachine()
-        test_data = "not a list"
+        test_data = "not a list or Numpy array"
         with self.assertRaises(TypeError):
             machine.getDiagnosis(test_data)
 
@@ -50,7 +57,14 @@ class TestBreastCancerPredictionMachine(unittest.TestCase):
         test_data = [8510426,13.54,14.36,87.46,566.3,0.09779,0.08129,0.06664,0.04781,0.1885,0.05766,0.2699,0.7886,2.058,23.56,0.008462,0.0146,0.02387,0.01315,0.0198,0.0023,15.11,19.26,99.7,711.2,0.144,0.1773,0.239,0.1288,0.2977,0.07259]
         result = machine.getDiagnosis(test_data)
         self.assertEqual(result, 'B')
-    
+
+    def test_getScaler(self):
+        machine = BreastCancerPredictionMachine()
+        test_data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+        test_sample_data = machine.setInput(test_data)
+        result = machine.getScaler(test_sample_data)
+        # self.assertEqual(type(result), sklearn.preprocessing.data.StandardScaler)
+        assert type(result) != list
 
 
 
