@@ -2,7 +2,7 @@ import unittest
 from BreastCancerML import *
 from sklearn.preprocessing import StandardScaler
 
-class TestBreastCancerPredictionMachine(unittest.TestCase):
+class TestBreastCancerPredictionMachine_setInput(unittest.TestCase):
 
     def test_setInput_Exists(self):
         machine = BreastCancerPredictionMachine()
@@ -34,6 +34,8 @@ class TestBreastCancerPredictionMachine(unittest.TestCase):
         result = machine.setInput(test_data)
         self.assertEqual(result.size, 31)
 
+class TestBreastCancerPredictionMachine_getDiagnosis(unittest.TestCase):
+
     def test_getDiagnosis_Returns_Single_Character_On_Success(self):
         machine = BreastCancerPredictionMachine()
         test_data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
@@ -58,13 +60,6 @@ class TestBreastCancerPredictionMachine(unittest.TestCase):
         result = machine.getDiagnosis(test_data)
         self.assertEqual(result, 'B')
 
-    def test_getScaler(self):
-        machine = BreastCancerPredictionMachine()
-        test_data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
-        test_sample_data = machine.setInput(test_data)
-        result = machine.getScaler(test_sample_data)
-        # self.assertEqual(type(result), sklearn.preprocessing.data.StandardScaler)
-        assert type(result) != list
 
 
 

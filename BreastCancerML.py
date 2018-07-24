@@ -14,6 +14,19 @@ import time
 
 class BreastCancerPredictionMachine(object):
 
+    model = SVC(C=2.0, kernel='rbf') ## choose the model
+    scaler = None
+
+    def __init__(self):
+        # Train the model
+        training_data = 'Data/data.csv'
+        pandas_data = pd.read_csv(training_data, index_col=False)
+        Y = pandas_data['diagnosis'].values # Get everything down the diagnosis column
+        X = pandas_data.drop('diagnosis', axis=1).values # get everything *but* the diagnosis column
+        self.scaler = StandardScaler().fit(X)
+        X_scaled = self.scaler.transform(X) ## normalize the X values (2d matrix)
+        self.model.fit(X_scaled, Y) ## train the model.  (input values, answers)
+        
     def setInput(self, input_list):
         if type(input_list) != list:
             raise TypeError('input must be a list')
@@ -25,15 +38,6 @@ class BreastCancerPredictionMachine(object):
     def getDiagnosis(self, data):
         if type(data) != list and type(data) != np.ndarray:
             raise TypeError('input must be a list or Numpy array')
-        # Train the model
-        training_data = 'Data/data.csv'
-        pandas_data = pd.read_csv(training_data, index_col=False)
-        Y = pandas_data['diagnosis'].values # Get everything down the diagnosis column
-        X = pandas_data.drop('diagnosis', axis=1).values # get everything *but* the diagnosis column
-        scaler = StandardScaler().fit(X)
-        X_scaled = scaler.transform(X) ## normalize the X values (2d matrix)
-        model = SVC(C=2.0, kernel='rbf') ## choose the model
-        model.fit(X_scaled, Y) ## train the model.  (input values, answers)
 
         # Make the prediction
         if type(data) != np.ndarray:
@@ -41,13 +45,10 @@ class BreastCancerPredictionMachine(object):
         else:
             sample_data = data
 
-        sample_data_scaled = scaler.transform(sample_data.reshape(1,-1)) ## One line of values, normalized.  These are the test values
-        predictions = model.predict(sample_data_scaled) ## Output - what should these values give you?
+        sample_data_scaled = self.scaler.transform(sample_data.reshape(1,-1)) ## One line of values, normalized.  These are the test values
+        predictions = self.model.predict(sample_data_scaled) ## Output - what should these values give you?
 
         return predictions[0]
-
-    def getScaler(self, sample_data):
-        return 1
 
     
   
