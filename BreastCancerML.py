@@ -38,16 +38,12 @@ class BreastCancerPredictionMachine(object):
     def getDiagnosis(self, data):
         if type(data) != list and type(data) != np.ndarray:
             raise TypeError('input must be a list or Numpy array')
-
-        # Make the prediction
         if type(data) != np.ndarray:
             sample_data = self.setInput(data)
         else:
             sample_data = data
-
         sample_data_scaled = self.scaler.transform(sample_data.reshape(1,-1)) ## One line of values, normalized.  These are the test values
         predictions = self.model.predict(sample_data_scaled) ## Output - what should these values give you?
-
         return predictions[0]
 
     
