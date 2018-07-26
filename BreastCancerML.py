@@ -17,16 +17,14 @@ class BreastCancerPredictionMachine(object):
     model = SVC(C=2.0, kernel='rbf') ## choose the model
     scaler = None
 
-    def __init__(self):
-        # Train the model
-        training_data = 'Data/data.csv'
-        pandas_data = pd.read_csv(training_data, index_col=False)
-        Y = pandas_data['diagnosis'].values # Get everything down the diagnosis column
-        X = pandas_data.drop('diagnosis', axis=1).values # get everything *but* the diagnosis column
+    def __init__(self, csv):
+        pandas_data = pd.read_csv(csv, index_col=False)
+        Y = pandas_data['diagnosis'].values
+        X = pandas_data.drop('diagnosis', axis=1).values
         self.scaler = StandardScaler().fit(X)
-        X_scaled = self.scaler.transform(X) ## normalize the X values (2d matrix)
-        self.model.fit(X_scaled, Y) ## train the model.  (input values, answers)
-        
+        X_scaled = self.scaler.transform(X)
+        self.model.fit(X_scaled, Y)
+
     def setInput(self, input_list):
         if type(input_list) != list:
             raise TypeError('input must be a list')
@@ -45,22 +43,21 @@ class BreastCancerPredictionMachine(object):
         sample_data_scaled = self.scaler.transform(sample_data.reshape(1,-1)) ## One line of values, normalized.  These are the test values
         predictions = self.model.predict(sample_data_scaled) ## Output - what should these values give you?
         return predictions[0]
-
-    
   
 
+if __name__ == '__main__':
+    input_data = 'Data/data.csv'
+    data = pd.read_csv(input_data, index_col=False)
 
-input_data = 'Data/data.csv'
-data = pd.read_csv(input_data, index_col=False)
+    Y = data['diagnosis'].values # Get everything down the diagnosis column
+    X = data.drop('diagnosis', axis=1).values # get everything *but* the diagnosis column
 
-Y = data['diagnosis'].values # Get everything down the diagnosis column
-X = data.drop('diagnosis', axis=1).values # get everything *but* the diagnosis column
-print(type(X))
+    machine = BreastCancerPredictionMachine('Data/data.csv')
+    result_1 = machine.getDiagnosis(X[10,:])
+    result_2 = machine.getDiagnosis(X[20,:])
+    result_3 = machine.getDiagnosis([8510426,13.54,14.36,87.46,566.3,0.09779,0.08129,0.06664,0.04781,0.1885,0.05766,0.2699,0.7886,2.058,23.56,0.008462,0.0146,0.02387,0.01315,0.0198,0.0023,15.11,19.26,99.7,711.2,0.144,0.1773,0.239,0.1288,0.2977,0.07259])
 
-machine = BreastCancerPredictionMachine()
-result_1 = machine.getDiagnosis(X[10,:])
-result_2 = machine.getDiagnosis(X[20,:])
-
-print("Predicted: {}, actual: {}".format(result_1, Y[10]));
-print("Predicted: {}, actual: {}".format(result_2, Y[20]));
+    print("Predicted: {}, actual: {}".format(result_1, Y[10]));
+    print("Predicted: {}, actual: {}".format(result_2, Y[20]));
+    print("Predicted: {}, actual: {}".format(result_3, 'B'));
 
