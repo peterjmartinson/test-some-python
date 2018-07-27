@@ -1,3 +1,6 @@
+"""
+__author__ = peterjmartinson
+"""
 from BreastCancerML import BreastCancerPredictionMachine
 
 
