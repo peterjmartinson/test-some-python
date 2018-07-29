@@ -23,22 +23,19 @@ class BreastCancerPredictionMachine(object):
         """
         csv = 'Data/data.csv'
         pandas_data = pd.read_csv(csv, index_col=False)
-        Y = pandas_data['diagnosis'].values
-        X = pandas_data.drop('diagnosis', axis=1).values
-        self.scaler = StandardScaler().fit(X)
-        X_scaled = self.scaler.transform(X)
-        self.model.fit(X_scaled, Y)
+        self.train(pandas_data)
 
     def trainFromCSV(self, csv):
         pandas_data = pd.read_csv(csv, index_col=False)
-        Y = pandas_data['diagnosis'].values
-        X = pandas_data.drop('diagnosis', axis=1).values
-        self.scaler = StandardScaler().fit(X)
-        X_scaled = self.scaler.transform(X)
-        self.model.fit(X_scaled, Y)
+        self.train(pandas_data)
 
     def trainFromData(self, training_data):
-        pandas_data = pd.read_csv(csv, index_col=False)
+        pandas_data = training_data
+        self.train(pandas_data)
+
+    def train(self, pandas_data):
+        if type(training_data) != pd.core.frame.DataFrame:
+            raise TypeError('input must be a Pandas DataFrame')
         Y = pandas_data['diagnosis'].values
         X = pandas_data.drop('diagnosis', axis=1).values
         self.scaler = StandardScaler().fit(X)

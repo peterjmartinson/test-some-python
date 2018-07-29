@@ -59,6 +59,17 @@ class TestBreastCancerPredictionMachine_getDiagnosis(unittest.TestCase):
         result = machine.getDiagnosis(test_data)
         self.assertEqual(result, 'B')
 
+class TestBreastCancerPredictionMachine_train(unittest.TestCase):
+    
+    def test_train_Takes_A_Pandas_DataFrame(self):
+        machine = BreastCancerPredictionMachine()
+        training_data = "not a Pandas DataFrame"
+        with self.assertRaises(TypeError):
+            machine.train(training_data)
+      
+
+
+
 if __name__ == '__main__':
     unittest.main()
 
