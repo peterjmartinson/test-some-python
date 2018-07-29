@@ -38,10 +38,6 @@ class BreastCancerPredictionMachine(object):
         self.model.fit(X_scaled, Y)
 
     def trainFromData(self, training_data):
-        if type(input_list) != list:
-            raise TypeError('input must be a list')
-        if len(input_list) != 31:
-            raise ValueError('input must be a list with 31 elements')
         pandas_data = pd.read_csv(csv, index_col=False)
         Y = pandas_data['diagnosis'].values
         X = pandas_data.drop('diagnosis', axis=1).values
@@ -50,6 +46,10 @@ class BreastCancerPredictionMachine(object):
         self.model.fit(X_scaled, Y)
 
     def setInput(self, input_list):
+        if type(input_list) != list:
+            raise TypeError('input must be a list')
+        if len(input_list) != 31:
+            raise ValueError('input must be a list with 31 elements')
         numpy_array = np.array(input_list).astype(np.float64)
         return numpy_array
 
