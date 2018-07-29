@@ -34,7 +34,7 @@ class BreastCancerPredictionMachine(object):
         self.train(pandas_data)
 
     def train(self, pandas_data):
-        if type(training_data) != pd.core.frame.DataFrame:
+        if not isinstance(pandas_data, pd.DataFrame):
             raise TypeError('input must be a Pandas DataFrame')
         Y = pandas_data['diagnosis'].values
         X = pandas_data.drop('diagnosis', axis=1).values
@@ -43,7 +43,7 @@ class BreastCancerPredictionMachine(object):
         self.model.fit(X_scaled, Y)
 
     def setInput(self, input_list):
-        if type(input_list) != list:
+        if not isinstance(input_list, list):
             raise TypeError('input must be a list')
         if len(input_list) != 31:
             raise ValueError('input must be a list with 31 elements')
@@ -51,9 +51,9 @@ class BreastCancerPredictionMachine(object):
         return numpy_array
 
     def getDiagnosis(self, data):
-        if type(data) != list and type(data) != np.ndarray:
+        if not isinstance(data, list) and not isinstance(data, np.ndarray):
             raise TypeError('input must be a list or Numpy array')
-        if type(data) != np.ndarray:
+        if not isinstance(data, np.ndarray):
             sample_data = self.setInput(data)
         else:
             sample_data = data
